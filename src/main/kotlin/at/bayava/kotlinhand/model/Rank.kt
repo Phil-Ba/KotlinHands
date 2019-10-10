@@ -8,12 +8,31 @@ enum class Rank(val value: Int) {
     FIVE(5),
     SIX(6),
     SEVEN(7),
-    EIGTH(8),
+    EIGHT(8),
     NINE(9),
     TEN(10),
     JACK(11),
     QUEEN(12),
     KING(13),
-    ACE(14)
+    ACE(14);
+
+    companion object {
+        fun fromString(s: String): Rank = when (s) {
+            "2" -> TWO
+            "3" -> THREE
+            "4" -> FOUR
+            "5" -> FIVE
+            "6" -> SIX
+            "7" -> SEVEN
+            "8" -> EIGHT
+            "9" -> NINE
+            "10" -> TEN
+            "J" -> JACK
+            "Q" -> QUEEN
+            "K" -> KING
+            "A" -> ACE
+            else -> throw IllegalArgumentException("Unknown value $s!")
+        }
+    }
 
 }
