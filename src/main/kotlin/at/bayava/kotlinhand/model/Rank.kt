@@ -33,6 +33,23 @@ enum class Rank(val value: Int) {
             "A" -> ACE
             else -> throw IllegalArgumentException("Unknown value $s!")
         }
+
+        fun fromValue(value: Int): Rank = when (value) {
+            2 -> TWO
+            3 -> THREE
+            4 -> FOUR
+            5 -> FIVE
+            6 -> SIX
+            7 -> SEVEN
+            8 -> EIGHT
+            9 -> NINE
+            10 -> TEN
+            11 -> JACK
+            12 -> QUEEN
+            13 -> KING
+            14 -> ACE
+            else -> throw IllegalArgumentException("Unknown value $value!")
+        }
     }
 
 }
