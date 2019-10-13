@@ -15,14 +15,32 @@ enum class Hand(private val value: Int) {
     companion object {
 
         fun matches(cards: List<Card>) {
-            when (cards) {
-            }
+//            when (cards.) {
+//            }
         }
 
-        private fun isFlush(cards: List<Card>) = cards.groupBy { it.suite }
+        private fun isStraight(cards: List<Card>): Boolean {
+            if (cards.count { it.rank == Rank.ACE } > 1) {
+                return false
+            }
+
+            val sortedCardsWithoutAces = cards.asSequence()
+                .map { it.rank }
+                .filter { it != Rank.ACE }
+                .sortedBy { o -> o.value }
+                .toList()
+
+            val isStraight = sortedCardsWithoutAces
+                .windowed(2)
+                .all { list: List<Rank> -> list[0].value + 1 == list[1].value }
+            return if (isStraight && sortedCardsWithoutAces.any { it == Rank.ACE }) {
+                (sortedCardsWithoutAces.first() == Rank.TWO || sortedCardsWithoutAces.last() == Rank.KING)
+            } else isStraight
+        }
+
+        private fun isFlush(cards: List<Card>): Boolean = cards.groupBy { it.suite }
             .keys
             .size == 1
-
     }
 
 }
