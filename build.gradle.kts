@@ -16,12 +16,16 @@ val test by tasks.getting(Test::class) {
     useJUnitPlatform { }
 }
 
+java {                                      // (4)
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "11"
+}
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
 }
