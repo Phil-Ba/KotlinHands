@@ -33,7 +33,7 @@ enum class Hand(private val value: Int) {
             val isStraight = sortedCardsWithoutAces
                 .windowed(2)
                 .all { list: List<Rank> -> list[0].value + 1 == list[1].value }
-            return if (isStraight && sortedCardsWithoutAces.any { it == Rank.ACE }) {
+            return if (isStraight && cards.any { it.rank == Rank.ACE }) {
                 (sortedCardsWithoutAces.first() == Rank.TWO || sortedCardsWithoutAces.last() == Rank.KING)
             } else isStraight
         }
