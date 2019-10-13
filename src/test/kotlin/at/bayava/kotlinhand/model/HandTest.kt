@@ -8,11 +8,17 @@ class HandTest : ShouldSpec() {
 
     init {
 
-        val suiteGen = Gen.enum<Suite>()
         val suites = suiteGen.random().iterator()
         val straightStartGen = Gen.choose(2, 9)
         val straightStarts = straightStartGen.random().iterator()
-
+        val nonStraightsGen = Gen.create {
+            cardGen.random().take(4).toList().run {
+                val maxCard = maxBy { it.rank.value }!!
+                val nonStraightRank = if (maxCard.rank.value <= Rank.QUEEN.value) maxCard.rank.value + 2
+                else maxCard.rank.value - 5
+                this + Card(suites.next(), Rank.fromValue(nonStraightRank))
+            }
+        }
         val straightsGen = object : Gen<List<Card>> {
             override fun constants(): Iterable<List<Card>> {
                 return listOf(
@@ -22,8 +28,7 @@ class HandTest : ShouldSpec() {
                         Card(suites.next(), Rank.THREE),
                         Card(suites.next(), Rank.FOUR),
                         Card(suites.next(), Rank.FIVE)
-                    ).shuffled(),
-                    listOf(
+                    ).shuffled(), listOf(
                         Card(suites.next(), Rank.ACE),
                         Card(suites.next(), Rank.KING),
                         Card(suites.next(), Rank.QUEEN),
@@ -43,10 +48,16 @@ class HandTest : ShouldSpec() {
             }
 
         }
-
-        should("Straights") {
-            forAll(straightsGen) { straight ->
-                Hand.isStraight(straight) == true
+        "Straights"{
+            should("be detected for hands with a straight") {
+                forAll(straightsGen) { straight ->
+                    Hand.isStraight(straight) == true
+                }
+            }
+            should("be not detected for hands without a straight") {
+                forAll(nonStraightsGen) { straight ->
+                    Hand.isStraight(straight) == false
+                }
             }
         }
     }
