@@ -16,7 +16,8 @@ val test by tasks.getting(Test::class) {
     useJUnitPlatform { }
 }
 
-java {                                      // (4)
+java {
+    // (4)
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
 }
@@ -27,5 +28,7 @@ tasks.withType<KotlinCompile> {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    testImplementation("io.kotlintest:kotlintest-runner-junit5:3.3.2")
+    implementation("org.apache.logging.log4j", "log4j-slf4j-impl", "2.12.1")
+    implementation("org.apache.logging.log4j", "log4j-core", "2.12.1")
+    testImplementation("io.kotlintest", "kotlintest-runner-junit5", "3.3.2")
 }
