@@ -19,7 +19,7 @@ enum class Hand(private val value: Int) {
 //            }
         }
 
-        private fun isStraight(cards: List<Card>): Boolean {
+        internal fun isStraight(cards: List<Card>): Boolean {
             if (cards.count { it.rank == Rank.ACE } > 1) {
                 return false
             }
@@ -38,7 +38,7 @@ enum class Hand(private val value: Int) {
             } else isStraight
         }
 
-        private fun isFlush(cards: List<Card>): Boolean = cards.groupBy { it.suite }
+        internal fun isFlush(cards: List<Card>): Boolean = cards.groupBy { it.suite }
             .keys
             .size == 1
     }
