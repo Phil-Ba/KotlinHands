@@ -12,6 +12,12 @@ enum class Hand(private val value: Int) {
     Pair(2),
     HighCard(1);
 
+    interface SameHandComperator<H : Hand> {
+
+        fun compare(l1: List<Card>, l2: List<Card>, handType: H): Int
+
+    }
+
     companion object {
 
         fun matches(cards: List<Card>) {
