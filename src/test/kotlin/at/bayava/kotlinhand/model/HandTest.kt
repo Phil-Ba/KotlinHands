@@ -19,6 +19,24 @@ class HandTest : ShouldSpec() {
                 this + Card(suites.next(), Rank.fromValue(nonStraightRank))
             }
         }
+
+        val flushesGen = Gen.bind(suiteGen) { suite ->
+            rankGen.random()
+                .take(5)
+                .map { Card(suite, it) }
+                .toList()
+        }
+
+        val nonFlushesGen = Gen.create {
+            cardGen.random()
+                .take(5)
+                .toList()
+        }.filterNot { nonFlush ->
+            Suite.values().any({ suite ->
+                nonFlush.all { it.suite == suite }
+            })
+        }
+
         val straightsGen = object : Gen<List<Card>> {
             override fun constants(): Iterable<List<Card>> {
                 return listOf(
@@ -57,6 +75,19 @@ class HandTest : ShouldSpec() {
             should("be not detected for hands without a straight") {
                 forAll(nonStraightsGen) { straight ->
                     Hand.isStraight(straight) == false
+                }
+            }
+        }
+
+        "Fulshes"{
+            should("be detected for all hands with a flush") {
+                forAll(flushesGen) { flush ->
+                    Hand.isFlush(flush) == true
+                }
+            }
+            should("be detected for all hands without a flush") {
+                forAll(nonFlushesGen) { flush ->
+                    Hand.isFlush(flush) == false
                 }
             }
         }
