@@ -20,9 +20,18 @@ enum class Hand(private val value: Int) {
 
     companion object {
 
-        fun matches(cards: List<Card>) {
-//            when (cards.) {
-//            }
+        fun matches(cards: List<Card>): Hand {
+            return when {
+                isStraightFlush(cards) -> StraightFlush
+                isFourOfAKind(cards) -> FourOfAKind
+                isFullHouse(cards) -> FullHouse
+                isFlush(cards) -> FLush
+                isStraight(cards) -> Straight
+                isThreeOfAKind(cards) -> ThreeOfAKind
+                isTwoPair(cards) -> TwoPair
+                isPair(cards) -> Pair
+                else -> HighCard
+            }
         }
 
         internal fun isStraight(cards: List<Card>): Boolean {
