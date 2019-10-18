@@ -47,6 +47,28 @@ enum class Hand(private val value: Int) {
         internal fun isFlush(cards: List<Card>): Boolean = cards.groupBy { it.suite }
             .keys
             .size == 1
+
+        internal fun isStraightFlush(cards: List<Card>) = isFlush(cards) && isStraight(cards)
+
+        internal fun isFourOfAKind(cards: List<Card>) = groupCountByRank(cards)
+            .containsValue(4)
+
+        internal fun isFullHouse(cards: List<Card>): Boolean {
+            val cardsByRank = groupCountByRank(cards)
+            return cardsByRank.containsValue(3) && cardsByRank.containsValue(2)
+        }
+
+        internal fun isThreeOfAKind(cards: List<Card>) = groupCountByRank(cards).containsValue(3)
+
+        internal fun isTwoPair(cards: List<Card>) = groupCountByRank(cards).filterValues { it == 2 }
+            .size == 2
+
+        internal fun isPair(cards: List<Card>) = groupCountByRank(cards).containsValue(2)
+
+        private fun groupCountByRank(cards: List<Card>) =
+            cards.groupBy { it.rank }
+                .mapValues { it.value.size }
+
     }
 
 }
